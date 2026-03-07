@@ -3,13 +3,11 @@ import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, IsolationForest
-from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 import shutil
 import os
 from imblearn.over_sampling import SMOTE
 from collections import Counter
-from sklearn.preprocessing import StandardScaler
 
 # Obtener la ruta donde kagglehub guarda los datos
 path = kagglehub.dataset_download("henrysue/online-shoppers-intention")
