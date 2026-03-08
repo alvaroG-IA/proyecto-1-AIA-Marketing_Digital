@@ -48,12 +48,12 @@ X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.2,
 # 4. Entrenamiento del modelo y resultados
 # =========================================
 
-rf = RandomForestClassifier(random_state=42, criterion='entropy', n_estimators=300, max_depth=20, min_samples_split=5, max_features='sqrt')
+rf = RandomForestClassifier(random_state=42, criterion='entropy', n_estimators=300, max_depth=20, min_samples_split=10, max_features='sqrt')
 rf.fit(X_train, y_train)
 probs = rf.predict_proba(X_test)[:, 1]
 
-nuevo_umbral = 0.5
-pred_umbral = (probs >= nuevo_umbral).astype(int)
+threshold = 0.5
+pred_umbral = (probs >= threshold).astype(int)
 
 print("Resultados:")
 print(classification_report(y_test, pred_umbral))
