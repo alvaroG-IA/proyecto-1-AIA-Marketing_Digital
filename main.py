@@ -34,21 +34,24 @@ print(f"Dataset cargado con {df.shape[0]} filas y {df.shape[1]} columnas.")
 # 3. Procesado de los datos
 # =========================================
 
-df = df.drop_duplicates()
+df_clean = df.drop_duplicates()
 
-y = df['Revenue']
-y = y.astype(int)
+meses_map = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'June': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
+df_clean['Month'] = df_clean['Month'].map(meses_map)
+df_clean = pd.get_dummies(df_clean, columns=['VisitorType', 'OperatingSystems', 'Browser', 'Region', 'TrafficType'], drop_first=True, dtype=int)
+df_clean['Weekend'] = df_clean['Weekend'].astype(int)
+df_clean['Revenue'] = df_clean['Revenue'].astype(int)
 
-X_encoded = pd.get_dummies(df.drop('Revenue', axis=1), columns=['Month', 'VisitorType'], drop_first=True)
-X_encoded['Weekend'] = X_encoded['Weekend'].astype(int)
+y = df_clean['Revenue']
+X = df_clean.drop('Revenue', axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.2, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 # =========================================
 # 4. Entrenamiento del modelo y resultados
 # =========================================
 
-rf = RandomForestClassifier(random_state=42, criterion='entropy', n_estimators=300, max_depth=20, min_samples_split=10, max_features='sqrt')
+rf = RandomForestClassifier(random_state=42, n_estimators=300, max_depth=20, min_samples_split=10, max_features='sqrt', class_weight='balanced')
 rf.fit(X_train, y_train)
 probs = rf.predict_proba(X_test)[:, 1]
 
