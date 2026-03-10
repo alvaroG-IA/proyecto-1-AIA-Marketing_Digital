@@ -20,6 +20,13 @@ def preprocess_base(data: pd.DataFrame, month_map: dict) -> pd.DataFrame:
         
     return df
 
+def generate_user_from_json(user_info: dict):
+    id = user_info['id']
+    user_dict = user_info['user_dict'].copy()
+    user_dict['Weekend'] = user_info['user_dict'] == 'True'
+    return id, user_dict
+
+
 def prepare_train_data(df_raw: pd.DataFrame, month_map: dict):
     df = df_raw.drop_duplicates()
     

@@ -3,6 +3,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import classification_report
 from typing import Union
 import pandas as pd
+
 from utils.data import preprocess_base
 
 
@@ -10,6 +11,7 @@ ValidModel = Union[RandomForestClassifier, XGBClassifier]
 
 def evaluate_model(model: ValidModel, X, y):
     preds = model.predict(X)
+    print('[EVALUATION]')
     print(classification_report(y, preds))
     return preds
 
@@ -50,7 +52,9 @@ def train_xgboost(X, y, best_config: bool = True, custom_config: dict = None) ->
 
     return xgb
 
-def predict_new_user(user_dict: dict, model: ValidModel, train_columns: list[str], month_map):
+def predict_new_user(user: tuple[str, dict], model: ValidModel, train_columns: list[str], month_map):
+    id = user[0]; user_dict = user[1]
+    
     df_user = pd.DataFrame([user_dict])
     df_user = preprocess_base(df_user, month_map)
     df_user_final = df_user.reindex(columns=train_columns, fill_value=0)
@@ -59,9 +63,9 @@ def predict_new_user(user_dict: dict, model: ValidModel, train_columns: list[str
     probability = model.predict_proba(df_user_final)[0][1]
 
     if prediction == 1:
-        print(f'Este usuario es POTENCIAL COMPRADOR con una seguridad del {probability*100:.2f}%')
+        print(f' -> El usuario {id} es [POTENCIAL COMPRADOR] con una seguridad del {probability*100:.2f}%')
     else:
-        print(f'Este usuario [NO] es POTENCIAL COMPRADOR con una seguridad del {(1-probability)*100:.2f}%')
+        print(f' -> El usuario {id} [NO] es [POTENCIAL COMPRADOR] con una seguridad del {(1-probability)*100:.2f}%')
     
     return prediction, probability
 
