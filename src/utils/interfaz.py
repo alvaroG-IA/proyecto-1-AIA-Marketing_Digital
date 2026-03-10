@@ -24,7 +24,7 @@ def select_exampe() -> int:
     while True:
         print("="*60)
         print(" --- MENÚ DE SELECCIÓN DE EJEMPLO PARA INFERENCIA --- ")
-        print("="*40)
+        print("="*60)
         print("[1] Nuevo usuario por defeto ")
         print("[2] Subir nuevo usuario (.json)")
         print("-" * 60)
