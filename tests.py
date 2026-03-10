@@ -8,6 +8,9 @@ import shutil
 import os
 from imblearn.over_sampling import SMOTE
 from collections import Counter
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 # Obtener la ruta donde kagglehub guarda los datos
 path = kagglehub.dataset_download("henrysue/online-shoppers-intention")
@@ -56,8 +59,8 @@ print(f"Distribución original: {Counter(y_train)}")
 print(f"Nueva distribución: {Counter(y_train_res)}")
 
 print('1) Usando Random Forest:')
-rf = RandomForestClassifier(random_state=42, criterion='gini', n_estimators=200, max_depth=None, min_samples_split=2)
-rf.fit(X_train_res, y_train_res)
+rf = RandomForestClassifier(random_state=42, criterion='entropy', n_estimators=300, max_depth=20, min_samples_split=5, max_features='sqrt')
+rf.fit(X_train, y_train)
 probs = rf.predict_proba(X_test)[:, 1]
 
 nuevo_umbral = 0.5
@@ -82,3 +85,39 @@ iso_forest.fit(X_train, y_train)
 pred_3 = iso_forest.predict(X_test)
 pred_3_final = [1 if x == -1 else 0 for x in pred_3]
 print(classification_report(y_test, pred_3_final))
+
+importances_rf = rf.feature_importances_
+importances_xgb = xgbmodel.feature_importances_
+indices = X_encoded.columns
+
+# 2. Crear un DataFrame para facilitar la visualización
+feature_imp_df = pd.DataFrame({
+    'Feature': indices,
+    'Random Forest': importances_rf,
+    'XGBoost': importances_xgb
+}).sort_values(by='Random Forest', ascending=False)
+
+# 3. Graficar (Top 10)
+plt.figure(figsize=(15, 5))
+top_10_df = feature_imp_df.head(10).melt(id_vars='Feature', var_name='Modelo', value_name='Importancia')
+
+sns.barplot(data=top_10_df, y='Importancia', x='Feature', hue='Modelo', palette='magma')
+
+plt.title('¿En qué columnas se fijan más los modelos? (Top 10)', fontsize=15)
+plt.xlabel('Nivel de Importancia')
+plt.ylabel('Variables del Dataset')
+plt.grid(axis='x', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show()
+
+errores = X_test.copy()
+errores['Real'] = y_test
+errores['Pred_RF'] = pred_umbral
+
+# Filtramos solo donde el modelo se equivocó (Falsos Negativos: Iban a comprar y el modelo dijo que no)
+falsos_negativos = errores[(errores['Real'] == 1) & (errores['Pred_RF'] == 0)]
+falsos_positivos = errores[(errores['Real'] == 0) & (errores['Pred_RF'] == 1)]
+
+print(f"El modelo no detectó {len(falsos_negativos)} compras.")
+print(f"Falsos positivos {len(falsos_positivos)}.")
+print("Promedio de PageValues en los errores:", falsos_negativos['PageValues'].mean())
