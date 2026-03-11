@@ -1,0 +1,21 @@
+# --- Análisis de Datos y ML ---
+numpy==2.4.2
+pandas==3.0.1
+scipy==1.17.1
+scikit-learn==1.8.0
+xgboost==3.2.0
+imbalanced-learn==0.14.1
+
+# --- Visualización ---
+matplotlib==3.10.8
+seaborn==0.13.2
+
+# --- Utilidades y Kaggle ---
+kagglehub==1.0.0
+joblib==1.5.3
+tqdm==4.67.3
+requests==2.32.5
+
+# --- Entorno de Trabajo (Opcional en producción, pero necesario para tu Notebook) ---
+jupyterlab==4.5.5
+ipykernel==7.2.0
