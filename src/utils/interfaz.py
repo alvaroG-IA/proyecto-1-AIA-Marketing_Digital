@@ -1,6 +1,6 @@
 def select_model() -> int:
     while True:
-        print("="*40)
+        print("\n" + "="*40)
         print(" --- MENÚ DE SELECCIÓN DEL MODELO --- ")
         print("="*40)
         print("[1] Random Forest ")

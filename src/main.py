@@ -7,7 +7,6 @@ from utils.interfaz import select_model, select_exampe
 # =========================================
 # 1. Carga de conjunto de datos
 # =========================================
-
 df = load_dataset()
 
 # =========================================
@@ -20,7 +19,6 @@ show_dataset_summary(X_train)
 # =========================================
 # 4. Selección de modelo
 # =========================================
-
 opt = select_model()
 if opt == 1:
     model = train_random_forest(X=X_train, y=y_train, best_config=True)
@@ -37,7 +35,7 @@ evaluate_model(model, X_test, y_test)
 # =========================================
 opt = select_exampe()
 if opt == 1:
-
+    # USUARIO POR DEFECTO
     new_user = ('id_111', {
         'Administrative': 2, 'Administrative_Duration': 45.0,
         'Informational': 0, 'Informational_Duration': 0.0,
