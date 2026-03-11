@@ -41,7 +41,7 @@ El sistema desarrollado automatiza un flujo completo para los datos: desde la in
     ```bash
     pip install -r requirements.txt
     ```
-## Guia de Uso del Script Principal
+## 🎛️ Guia de Uso del Script Principal
 Para iniciar el sistema se debe de ejecutar:
 
 ```bash
