@@ -57,4 +57,7 @@ Seguidamente el script te guiará mediante consola a través de los siguientes p
 3. **Fase de inferencia**. Podrás elegir entre dos métodos para probar el modelo:
    1. **Usuario por defecto**. Utiliza un perfil preconfigurado en el código para una prueba rápida.
    2. Carga desde JSON. Permite introducir el nombre de un archivo (ej: `example.json`). **IMPORTANTE**, los archivos deben de estar ubicados dentro del directorio `users/`.
+---
+## Contributors
 
+[![contributors](https://contrib.rocks/image?repo=alvaroG-IA/proyecto-1-AIA-Marketing_Digital)](https://github.com/alvaroG-IA/proyecto-1-AIA-Marketing_Digital/graphs/contributors)
